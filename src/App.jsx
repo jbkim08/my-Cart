@@ -1,9 +1,10 @@
 import './App.css';
+import Navbar from './components/Nabvar/Navbar';
 
 function App() {
   return (
     <div className="app">
-      <nav>네브바</nav>
+      <Navbar />
       <main>라우팅</main>
     </div>
   );
