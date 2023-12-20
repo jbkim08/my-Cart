@@ -3,6 +3,7 @@ import QuantityInput from './QuantityInput';
 import './SingleProductPage.css';
 import { useParams } from 'react-router-dom';
 import useData from '../../Hook/useData';
+import Loader from '../Common/Loader';
 
 const SingleProductPage = () => {
   // 처음 시작 이미지 번호는 0 => productImage1
@@ -12,6 +13,7 @@ const SingleProductPage = () => {
   return (
     <section className="align_center single_product">
       {error && <em className="form_error">{error}</em>}
+      {isLoading && <Loader />}
       {product._id && (
         <>
           <div className="align_center">
