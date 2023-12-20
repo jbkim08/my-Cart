@@ -7,8 +7,17 @@ import { useSearchParams } from 'react-router-dom';
 const ProductsList = () => {
   const [search, setSearch] = useSearchParams();
   const category = search.get('category');
-  const { data, error, isLoading } = useData('/products', { params: { category } }, [category]);
+  const page = search.get('page');
+  const { data, error, isLoading } = useData('/products', { params: { category, page } }, [
+    category,
+    page,
+  ]);
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8];
+  // search 파라미터에서 page값만 업데이트
+  const handlePageChange = (page) => {
+    const currentParams = Object.fromEntries([...search]);
+    setSearch({ ...currentParams, page: page });
+  };
 
   return (
     <section className="products_list_section">
@@ -39,6 +48,7 @@ const ProductsList = () => {
               stock={product.stock}
             />
           ))}
+        <button onClick={() => handlePageChange(2)}>페이지2</button>
       </div>
     </section>
   );
