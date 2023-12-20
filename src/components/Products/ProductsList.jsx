@@ -2,10 +2,14 @@ import './ProductsList.css';
 import ProductCard from './ProductCard';
 import useData from '../../Hook/useData';
 import ProductCardSkeleton from './ProductCardSkeleton';
+import { useSearchParams } from 'react-router-dom';
 
 const ProductsList = () => {
-  const { data, error, isLoading } = useData('/products');
+  const [search, setSearch] = useSearchParams();
+  const category = search.get('category');
+  const { data, error, isLoading } = useData('/products', { params: { category } }, [category]);
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8];
+
   return (
     <section className="products_list_section">
       <header className="align_center products_list_header">
