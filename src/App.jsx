@@ -6,6 +6,7 @@ import setAuthToken from './utils/setAuthToken';
 import { addToCartAPI, getCartAPI } from './services/cartServices';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UserContext from './contexts/UserContext';
 import './App.css';
 
 setAuthToken(localStorage.getItem('token'));
@@ -61,13 +62,15 @@ function App() {
     getCart(); //유저가 바뀌거나 시작시 카트정보를 가져옴
   }, [user]);
   return (
-    <div className="app">
-      <Navbar user={user} cartCount={cart.length} />
-      <main>
-        <ToastContainer position="bottom-right" />
-        <Routing addToCart={addToCart} cart={cart} />
-      </main>
-    </div>
+    <UserContext.Provider value={user}>
+      <div className="app">
+        <Navbar user={user} cartCount={cart.length} />
+        <main>
+          <ToastContainer position="bottom-right" />
+          <Routing addToCart={addToCart} cart={cart} />
+        </main>
+      </div>
+    </UserContext.Provider>
   );
 }
 
