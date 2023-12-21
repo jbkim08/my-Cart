@@ -3,7 +3,7 @@ import Routing from './components/Routing/Routing';
 import { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
-import { addToCartAPI, getCartAPI } from './services/cartServices';
+import { addToCartAPI, getCartAPI, removeFromCartAPI } from './services/cartServices';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UserContext from './contexts/UserContext';
@@ -39,6 +39,9 @@ function App() {
     const oldCart = [...cart];
     const newCart = oldCart.filter((item) => item.product._id !== id);
     setCart(newCart);
+    removeFromCartAPI(id).catch((err) => {
+      toast.error('장바구니 상품 삭제 에러');
+    });
   };
   useEffect(() => {
     //시작시 로컬스토리지의 토큰정보를 읽어옴

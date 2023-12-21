@@ -9,3 +9,8 @@ export function addToCartAPI(id, quantity) {
 export async function getCartAPI() {
   return await apiClient.get('/cart');
 }
+
+// 벡엔드에서 카트 상품 삭제
+export function removeFromCartAPI(id) {
+  return apiClient.patch(`/cart/remove/${id}`);
+}
