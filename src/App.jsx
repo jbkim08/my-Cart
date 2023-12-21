@@ -3,8 +3,10 @@ import Routing from './components/Routing/Routing';
 import { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
-import './App.css';
 import { addToCartAPI } from './services/cartServices';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
 
 setAuthToken(localStorage.getItem('token'));
 
@@ -24,8 +26,12 @@ function App() {
     setCart(updatedCart);
     //벡엔드 서버에 저장하기
     addToCartAPI(product._id, quantity)
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err.resopnse));
+      .then((res) => {
+        toast.success('상품 추가 성공!');
+      })
+      .catch((err) => {
+        toast.error('상품 추가에 실패했습니다.');
+      });
   };
   useEffect(() => {
     //시작시 로컬스토리지의 토큰정보를 읽어옴
@@ -44,6 +50,7 @@ function App() {
     <div className="app">
       <Navbar user={user} cartCount={cart.length} />
       <main>
+        <ToastContainer position="bottom-right" />
         <Routing addToCart={addToCart} />
       </main>
     </div>
