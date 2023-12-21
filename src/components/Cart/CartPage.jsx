@@ -5,11 +5,12 @@ import Table from '../Common/Table';
 import QuantityInput from '../SingleProduct/QuantityInput';
 import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../contexts/UserContext';
+import CartContext from '../../contexts/CartContext';
 
-const CartPage = ({ cart }) => {
+const CartPage = () => {
   const [subTotal, setSubTotal] = useState(0); //배송비 제외한 전체 합계
   const userObj = useContext(UserContext);
-  console.log(userObj);
+  const { cart, addToCart } = useContext(CartContext);
   useEffect(() => {
     let total = 0;
     cart.forEach((item) => {
