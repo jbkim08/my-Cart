@@ -8,7 +8,16 @@ function App() {
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
   const addToCart = (product, quantity) => {
-    setCart([...cart, { product, quantity }]);
+    const updatedCart = [...cart];
+    // findIndex는 모든 배열아이템과 비교해서 참이 있으면 그 인덱스번호를 리턴하고 없으면 -1
+    const productIndex = updatedCart.findIndex((item) => item.product._id === product._id);
+    if (productIndex === -1) {
+      updatedCart.push({ product: product, quantity: quantity });
+    } else {
+      updatedCart[productIndex].quantity += quantity;
+    }
+
+    setCart(updatedCart);
   };
   useEffect(() => {
     //시작시 로컬스토리지의 토큰정보를 읽어옴
