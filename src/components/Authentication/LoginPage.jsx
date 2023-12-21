@@ -1,13 +1,23 @@
 import { useForm } from 'react-hook-form';
 import './LoginPage.css';
+import { login } from '../../services/userServices';
+import { useState } from 'react';
 
 const LoginPage = () => {
+  const [formError, setFormError] = useState('');
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const submitData = (formData) => console.log(formData);
+
+  const submitData = async (formData) => {
+    try {
+      await login(formData);
+    } catch (error) {
+      setFormError(error.response.data.message);
+    }
+  };
   return (
     <section className="align_center form_page">
       <form onSubmit={handleSubmit(submitData)} className="authentication_form">
@@ -36,6 +46,8 @@ const LoginPage = () => {
             />
             {errors.password && <em className="form_error">{errors.password.message}</em>}
           </div>
+
+          {formError && <em className="form_error">{formError}</em>}
 
           <button type="submit" className="search_button form_submit">
             Submit
