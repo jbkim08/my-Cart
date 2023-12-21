@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
 import './App.css';
+import { addToCartAPI } from './services/cartServices';
 
 setAuthToken(localStorage.getItem('token'));
 
@@ -21,6 +22,10 @@ function App() {
     }
 
     setCart(updatedCart);
+    //벡엔드 서버에 저장하기
+    addToCartAPI(product._id, quantity)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err.resopnse));
   };
   useEffect(() => {
     //시작시 로컬스토리지의 토큰정보를 읽어옴
