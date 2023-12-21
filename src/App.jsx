@@ -65,7 +65,7 @@ function App() {
       <Navbar user={user} cartCount={cart.length} />
       <main>
         <ToastContainer position="bottom-right" />
-        <Routing addToCart={addToCart} />
+        <Routing addToCart={addToCart} cart={cart} />
       </main>
     </div>
   );
