@@ -4,3 +4,8 @@ import apiClient from '../utils/api-client';
 export function addToCartAPI(id, quantity) {
   return apiClient.post(`/cart/${id}`, { quantity });
 }
+
+// 벡엔드에서 카트정보 가져오기
+export async function getCartAPI() {
+  return await apiClient.get('/cart');
+}

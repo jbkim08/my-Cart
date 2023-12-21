@@ -3,7 +3,7 @@ import Routing from './components/Routing/Routing';
 import { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
-import { addToCartAPI } from './services/cartServices';
+import { addToCartAPI, getCartAPI } from './services/cartServices';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
@@ -46,6 +46,20 @@ function App() {
       setUser(jwtUser);
     }
   }, []);
+
+  const getCart = () => {
+    getCartAPI()
+      .then((res) => {
+        setCart(res.data); //성공시 가져온 데이터를 스테이트에 저장
+      })
+      .catch((err) => {
+        toast.error('카트 가져오기에 실패했습니다.');
+      });
+  };
+
+  useEffect(() => {
+    getCart(); //유저가 바뀌거나 시작시 카트정보를 가져옴
+  }, [user]);
   return (
     <div className="app">
       <Navbar user={user} cartCount={cart.length} />
