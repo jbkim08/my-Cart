@@ -10,7 +10,7 @@ import CartContext from '../../contexts/CartContext';
 const CartPage = () => {
   const [subTotal, setSubTotal] = useState(0); //배송비 제외한 전체 합계
   const userObj = useContext(UserContext);
-  const { cart, addToCart } = useContext(CartContext);
+  const { cart, addToCart, removeFromCart } = useContext(CartContext);
   useEffect(() => {
     let total = 0;
     cart.forEach((item) => {
@@ -38,7 +38,7 @@ const CartPage = () => {
                 <QuantityInput quantity={quantity} stock={product.stock} />
               </td>
               <td>{(quantity * product.price).toLocaleString('ko-KR')} 원</td>
-              <td>
+              <td onClick={() => removeFromCart(product._id)}>
                 <img src={remove} alt="remove icon" className="cart_remove_icon" />
               </td>
             </tr>
