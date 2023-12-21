@@ -1,8 +1,11 @@
 import Navbar from './components/Nabvar/Navbar';
 import Routing from './components/Routing/Routing';
-import './App.css';
 import { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import setAuthToken from './utils/setAuthToken';
+import './App.css';
+
+setAuthToken(localStorage.getItem('token'));
 
 function App() {
   const [user, setUser] = useState(null);
