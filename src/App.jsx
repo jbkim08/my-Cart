@@ -93,7 +93,7 @@ function App() {
   };
 
   useEffect(() => {
-    getCart(); //유저가 바뀌거나 시작시 카트정보를 가져옴
+    if (user) getCart(); //유저가 바뀌거나 시작시 카트정보를 가져옴
   }, [user]);
 
   return (
