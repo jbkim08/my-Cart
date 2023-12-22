@@ -43,6 +43,19 @@ function App() {
       toast.error('장바구니 상품 삭제 에러');
     });
   };
+  const updateCart = (type, id) => {
+    const updatedCart = [...cart];
+    const productIndex = updatedCart.findIndex((item) => item.product._id === id);
+
+    if (type === 'increase') {
+      updatedCart[productIndex].quantity += 1;
+      setCart(updatedCart);
+    }
+    if (type === 'decrease') {
+      updatedCart[productIndex].quantity -= 1;
+      setCart(updatedCart);
+    }
+  };
   useEffect(() => {
     //시작시 로컬스토리지의 토큰정보를 읽어옴
     const jwt = localStorage.getItem('token');
@@ -72,7 +85,7 @@ function App() {
   }, [user]);
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateCart }}>
       <UserContext.Provider value={user}>
         <div className="app">
           <Navbar user={user} cartCount={cart.length} />
