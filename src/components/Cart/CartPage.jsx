@@ -6,11 +6,25 @@ import QuantityInput from '../SingleProduct/QuantityInput';
 import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../contexts/UserContext';
 import CartContext from '../../contexts/CartContext';
+import { checkoutAPI } from '../../services/orderServices';
+import { toast } from 'react-toastify';
 
 const CartPage = () => {
   const [subTotal, setSubTotal] = useState(0); //배송비 제외한 전체 합계
   const userObj = useContext(UserContext);
-  const { cart, removeFromCart, updateCart } = useContext(CartContext);
+  const { cart, removeFromCart, updateCart, setCart } = useContext(CartContext);
+  const checkout = () => {
+    const oldCart = [...cart];
+    setCart([]); //장바구니 비우기 (모두 삭제)
+    checkoutAPI()
+      .then(() => {
+        toast.success('주문 성공!');
+      })
+      .catch(() => {
+        toast.error('체크아웃 중 에러발생!');
+        setCart(oldCart); //복구
+      });
+  };
   useEffect(() => {
     let total = 0;
     cart.forEach((item) => {
@@ -69,7 +83,9 @@ const CartPage = () => {
         </tbody>
       </table>
 
-      <button className="search_button checkout_button">결재하기</button>
+      <button onClick={checkout} className="search_button checkout_button">
+        결재하기
+      </button>
     </section>
   );
 };

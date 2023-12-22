@@ -97,7 +97,7 @@ function App() {
   }, [user]);
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateCart, setCart }}>
       <UserContext.Provider value={user}>
         <div className="app">
           <Navbar user={user} cartCount={cart.length} />
