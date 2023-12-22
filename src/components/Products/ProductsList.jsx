@@ -9,10 +9,12 @@ const ProductsList = () => {
   const [search, setSearch] = useSearchParams();
   const category = search.get('category');
   const page = search.get('page');
-  const { data, error, isLoading } = useData('/products', { params: { category, page } }, [
-    category,
-    page,
-  ]);
+  const searchQuery = search.get('search');
+  const { data, error, isLoading } = useData(
+    '/products',
+    { params: { search: searchQuery, category, page } },
+    [category, page, searchQuery]
+  );
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8];
   // search 파라미터에서 page값만 업데이트
   const handlePageChange = (page) => {
