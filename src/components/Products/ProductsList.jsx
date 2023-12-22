@@ -4,8 +4,11 @@ import useData from '../../Hook/useData';
 import ProductCardSkeleton from './ProductCardSkeleton';
 import { useSearchParams } from 'react-router-dom';
 import Pagination from '../Common/Pagination';
+import { useEffect, useState } from 'react';
 
 const ProductsList = () => {
+  const [sortBy, setSortBy] = useState('');
+  const [sortedProducts, setSortedProducts] = useState([]);
   const [search, setSearch] = useSearchParams();
   const category = search.get('category');
   const page = search.get('page');
@@ -22,11 +25,33 @@ const ProductsList = () => {
     setSearch({ ...currentParams, page: page });
   };
 
+  useEffect(() => {
+    if (data && data.products) {
+      const products = [...data.products];
+      if (sortBy === 'price desc') {
+        setSortedProducts(products.sort((a, b) => b.price - a.price)); //큰순 b-a
+      } else if (sortBy === 'price asc') {
+        setSortedProducts(products.sort((a, b) => a.price - b.price)); //작은순 a-b
+      } else if (sortBy === 'rate desc') {
+        setSortedProducts(products.sort((a, b) => b.reviews.rate - a.reviews.rate)); //평점 큰순
+      } else if (sortBy === 'rate asc') {
+        setSortedProducts(products.sort((a, b) => a.reviews.rate - b.reviews.rate)); //평점 작은순
+      } else {
+        setSortedProducts(products);
+      }
+    }
+  }, [sortBy, data]);
+
   return (
     <section className="products_list_section">
       <header className="align_center products_list_header">
         <h2>상품목록</h2>
-        <select name="sort" id="" className="products_sorting">
+        <select
+          name="sort"
+          onChange={(e) => setSortBy(e.target.value)}
+          id=""
+          className="products_sorting"
+        >
           <option value="">정렬방법</option>
           <option value="price desc">가격높은순</option>
           <option value="price asc">가격낮은순</option>
@@ -39,19 +64,7 @@ const ProductsList = () => {
         {error && <em className="form_error">{error}</em>}
         {isLoading && skeletons.map((n) => <ProductCardSkeleton key={n} />)}
         {data.products &&
-          data.products.map((product) => (
-            <ProductCard
-              key={product._id}
-              product={product}
-              // id={product._id}
-              // image={product.images[0]}
-              // price={product.price}
-              // title={product.title}
-              // rating={product.reviews.rate}
-              // ratingCounts={product.reviews.counts}
-              // stock={product.stock}
-            />
-          ))}
+          sortedProducts.map((product) => <ProductCard key={product._id} product={product} />)}
       </div>
       {data && (
         <Pagination
