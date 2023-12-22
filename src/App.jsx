@@ -3,7 +3,13 @@ import Routing from './components/Routing/Routing';
 import { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
-import { addToCartAPI, getCartAPI, removeFromCartAPI } from './services/cartServices';
+import {
+  addToCartAPI,
+  decreaseProductAPI,
+  getCartAPI,
+  increaseProductAPI,
+  removeFromCartAPI,
+} from './services/cartServices';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UserContext from './contexts/UserContext';
@@ -50,10 +56,16 @@ function App() {
     if (type === 'increase') {
       updatedCart[productIndex].quantity += 1;
       setCart(updatedCart);
+      increaseProductAPI(id).catch((err) => {
+        toast.error('상품 증가 에러!');
+      });
     }
     if (type === 'decrease') {
       updatedCart[productIndex].quantity -= 1;
       setCart(updatedCart);
+      decreaseProductAPI(id).catch((err) => {
+        toast.error('상품 감소 에러!');
+      });
     }
   };
   useEffect(() => {
